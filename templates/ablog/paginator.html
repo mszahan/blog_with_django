@@ -1,0 +1,59 @@
+<div class="text-center mt-5"> 
+  {% if page.has_other_pages %}
+  <ul class="pagination">
+    {% if page.has_previous %}
+      <li class="page-item"><a href="?page={{ page.previous_page_number }} " class="page-link">&laquo;</a></li>
+    {% else %}
+      <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+    {% endif %}
+
+    {% for i in page.paginator.page_range %}
+      {% if page.number == i %}
+        <li class="active page-item"><span class="page-link">{{ i }} </span></li>
+      {% else %}
+        <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page.has_next %}
+      <li class="page-item"><a href="?page={{ page.next_page_number }}" class="page-link">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+</div>
+
+<div class="text-center">
+    <ul class="pagination">
+    
+    {% if backup.has_previous %}
+    <li><-a href="?page={{ backup.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">«</li>
+    
+    {% else %}
+    <li class="disabled">«</li>
+    {% endif %}
+    
+    {% if backup.number|add:'-4' > 1 %}
+    <li><-a href="?page={{ page_obj.number|add:'-5' }}">…</li>
+    {% endif %}
+    
+    {% for i in backup.paginator.page_range %}
+    {% if backup.number == i %}
+    <li class="active">{{ i }} (current)</li>
+    {% elif i > backup.number|add:'-5' and i < backup.number|add:'10' %}
+    <li><-a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</li>
+    {% endif %}
+    {% endfor %}
+    
+    {% if backup.paginator.num_pages > backup.number|add:'4' %}
+    <li><-a href="?page={{ page_obj.number|add:'5' }}">…</li>
+    {% endif %}
+    {% if backup.has_next %}
+    <li><-a href="?page={{ backup.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">»
+    
+    <li class="disabled">»</li>
+    {% endif %}
+    </ul>
+    </div>

@@ -1,0 +1,19 @@
+<ul>
+
+
+    {% for post in popular_posts %}
+        
+    
+        
+        <li>
+          <a href=" {{post.get_absolute_url}} ">
+            <h5>
+              {{post.title}}
+            </h5>
+            <span>{{post.publish}}</span>
+          </a>
+        </li>
+    
+    
+    {% endfor %}
+      </ul>

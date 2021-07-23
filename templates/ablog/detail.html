@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+{% load blog_tags %}
+{% load static %}
+{% load social_share %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>{{post.title}}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    />
+  <link rel="stylesheet" href="{% static 'ablog/css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'ablog/css/blog.css' %}" />
+
+</head>
+<body>
+  
+    <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 flex-column">
+              <div class="text-content d-inline-flex">
+                <h2 class="px-4">Build your personal website with us</h2>
+                <div>
+                  <a
+                    href="#"
+                    class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center"
+                  >
+                    <span>Schedule a Meeting</span>
+                    <i class="bi bi-arrow-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Banner Ends Here -->
+
+    <!-- Blog Page Body -->
+    <section class="blog-post">
+        <div id="scroll-progress">
+        </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="blog-post">
+                    <div class="blog-thumb">
+                      <picture
+                        ><img
+                          src="{% static 'ablog/img/blog-2.jpg' %}"
+                          alt="blog"
+                          class="img-fluid"
+                          loading="lazy"
+                      /></picture>
+                    </div>
+                    <div class="down-content pt-3">
+                      <ul
+                        class="
+                          d-flex
+                          align-content-center
+                        "
+                      >
+                        <li>
+                          <i class="fa fa-calendar"></i> {{post.publish}}
+                        </li>
+                        <li>
+                          <i class="fa fa-users"></i> {{post.author}}
+                        </li>
+                        <a href="{{post.category.get_absolute_url}}">
+                          <li>
+                            <i class="fa fa-folder"></i> {{post.category}}
+                          </li>
+                        </a>
+
+                        <a href="{% url 'post_share' post.id %}" class="btn btn-primary">
+                          <li>
+                            <i class="fa fa-folder"></i> Share
+                          </li>
+                        </a>
+
+                      </ul>
+
+                      <div class="post-details mt-5">
+                        <h1>
+                          {{post.title}}
+                        </h1>
+                        <p class="mt-5">
+
+                          {{post.body|safe|linebreaks}}
+       
+                        </p>
+  
+                      </div>
+
+                      <!-- similar posts secton -->
+
+                      <section class="blog-page">
+                      <div class="container">
+                        <h3>Similar posts</h3>
+                      <div class="row">
+                        
+                        {% for post in similar_posts %}
+                
+                        <div class="col-xl-4 col-md-6 mt-5">
+                            <div class="blog-card d-flex flex-column">
+                                <a href="{{post.get_absolute_url}}"><img src="{% static 'ablog/img/blog-2.jpg' %}" alt="Workspace Desktop" class="img-fluid" width="800" height="600"></a>
+                                <div class="card-info">
+                                    <a href="{{post.get_absolute_url}}"><h6> {{post.title}} </h6></a>
+                  
+                                </div>
+                              </div>
+                        </div>
+                        {% empty %}
+                        <p>Similar post not found</p>
+            
+                        {% endfor %}
+                
+                        
+                    </div>
+                  </div>
+                  </section>
+
+
+
+                  <!-- post share options -->
+
+                      <div class="post-options">
+                        <div class="row">
+
+
+                          <div class="col-lg-12">
+                            <ul
+                              class="
+                                post-share
+                                d-flex
+                                justify-content-center
+                                align-items-center
+                              "
+                            >
+            
+                              <li>
+                                
+                                {% post_to_facebook object_or_url '<i class="bi bi-facebook"></i>' %}
+                                
+                              </li>
+                              <li>
+
+                                {% post_to_twitter '{{post.title}} {{post.image}} ' object_or_url '<i class="bi bi-twitter"></i>' %}
+                              </li>
+                              <!-- <li>
+                                <i class="bi bi-instagram"></i>
+                              </li> -->
+
+                              <li>
+                                {% post_to_linkedin object_or_url %}
+                              </li>
+
+                              <!-- <li>
+                                {% post_to_gplus  object_or_url '<i class="fab fa-google-plus-g"></i>' %}
+                                
+                              </li> -->
+                              <li>
+                                {% send_email 'Shareing blog from websytar' '{{post.title}} {{post.image}}' object_or_url '<i class="bi bi-envelope"></i>' %}
+                              
+                              </li>
+
+                              <li>
+                                {% post_to_reddit '{{post.title}} {{post.image}}' object_or_url '<i class="fab fa-reddit"></i>' %}
+                                
+                              </li>
+                              <li>
+                                {% post_to_telegram '{{post.title}} {{post.image}}' object_or_url '<i class="fab fa-telegram"></i>' %}
+                                
+                              </li>
+                              <li>
+                                {% post_to_whatsapp object_or_url '<i class="bi bi-whatsapp"></i>' %}
+                                
+                              </li>
+                              <!-- <li>
+                                <i class="fab fa-pinterest"></i>
+                              </li> -->
+                            </ul>
+                          </div>
+
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- comment portions -->
+
+                <div class="col-lg-12 ">
+                  <div class="comments">
+                    <div class="comments-heading">
+
+                      
+                      {% with comments.count as total_comments %}
+                        
+
+                      <h2> {{total_comments}} comment{{total_comments|pluralize}} </h2>
+
+                      {% endwith %}
+                    </div>
+                    <div class="content">
+                      <ul>
+
+                        
+                        {% for comment in comments %}
+                          
+                        
+                          
+
+
+                        <li>
+                          <div class="author-thumb d-inline">
+                            <img
+                              src=" {% static 'ablog/img/commnet_logo.png' %} "
+                              alt=" commnet user logo"
+                              class="rounded-circle img-fluid"
+                            />
+                          </div>
+                          <div class="right-content">
+                            <h4> {{comment.name}} <span>{{comment.created}}</span></h4>
+                            <p>
+                              {{ comment.body|linebreaks }}
+                          </div>
+                        </li>
+                        
+                        <form action="." method="POST">
+                          {% csrf_token %}
+                          {{ comment_form.as_p }}
+                          <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                          <input class="btn btn-primary" type="submit" value="Replay">
+                        </form>
+
+                        
+                        {% for replay in comment.replies.all %}
+                        <li class="replied">
+                          <div class="author-thumb">
+                            <img
+                              src=" {% static 'ablog/img/commnet_logo.png' %} "
+                              alt=""
+                              class="rounded-circle"
+                            />
+                          </div>
+                          <div class="right-content">
+                            <h4>{{ replay.name }}<span>{{ replay.created }}</span></h4>
+                            <p>
+                              {{ replay.body }}
+                            </p>
+                          </div>
+                        </li>
+                        {% endfor %}
+
+                        {% empty %}
+                        <p> Be the first to comment</p>
+                        {% endfor %}
+                      </ul>
+
+
+                    </div>
+                  </div>
+                </div>
+
+<!-- comment form -->
+
+                <div class="col-lg-12">
+                  <div class="comments-item submit-comment">
+                    <div class="comments-heading">
+                      <h2>Your comment</h2>
+                    </div>
+                    <div class="content">
+
+                      
+                        <form action="." method="POST">
+                          {% csrf_token %}
+                          {{ comment_form.as_p }}
+                          <p><input type="submit" value="add comment"></p>
+                        </form>
+                        
+
+
+                      <form id="comment" action="" method="post">
+                        <div class="row">
+                          <div class="col-md-6 col-sm-12">
+                            <fieldset>
+                              <input
+                                name="name"
+                                type="text"
+                                id="name"
+                                placeholder="Your name"
+                                required=""
+                              />
+                            </fieldset>
+                          </div>
+                          <div class="col-md-6 col-sm-12">
+                            <fieldset>
+                              <input
+                                name="email"
+                                type="text"
+                                id="email"
+                                placeholder="Your email"
+                                required=""
+                              />
+                            </fieldset>
+                          </div>
+                          <div class="col-md-12 col-sm-12">
+                            <fieldset>
+                              <input
+                                name="subject"
+                                type="text"
+                                id="subject"
+                                placeholder="Subject"
+                              />
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-12">
+                            <fieldset>
+                              <textarea
+                                name="message"
+                                rows="6"
+                                id="message"
+                                placeholder="Type your comment"
+                                required=""
+                              ></textarea>
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-12">
+                            <fieldset>
+                              <button
+                                type="submit"
+                                id="form-submit"
+                                class="main-button"
+                              >
+                                Submit
+                              </button>
+                            </fieldset>
+                          </div>
+                        </div>
+                      </form>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <!-- Sidebar -->
+          <div class="col-lg-4 col-11 mt-5 justify-content-center mx-auto">
+            <div class="sidebar">
+              <div class="row">
+
+                  <!-- search portions  -->
+
+                <div class="col-lg-12">
+                  <div class="sidebar-item search">
+                    <form id="search_form" name="gs" method="GET" action="{% url 'blog_search' %}">
+                      <input required
+                        type="text"
+                        name="search"
+                        class="searchText"
+                        autocomplete="off"
+                        placeholder="Search blog..."
+                      />
+                    </form>
+                  </div>
+                </div>
+
+                <!-- side bar recent post contents -->
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      <h2>Recent Posts</h2>
+                    </div>
+                    <div class="content">
+
+                      {% show_latest_posts 3 %}
+
+
+                    </div>
+                  </div>
+                </div>
+
+
+
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      <h2>Popular Posts</h2>
+                    </div>
+                    <div class="content">
+
+                      {% get_most_popular_posts 2 %}
+
+
+                    </div>
+                  </div>
+                </div>
+
+<!-- side bar category contents -->
+
+                <div class="col-lg-12">
+                  <div class="sidebar-item categories">
+                    <div class="sidebar-heading">
+                      <h2>Categories</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        
+                        {% if post.category %}
+                          
+                        
+                          
+                        <li><a href="{{post.category.get_absolute_url}}"> {{post.category}} </a></li>
+
+                        {% endif %}
+                        <li><a href="{% url 'cat_list' %}"> see all categories </a></li>
+                        
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+<!-- side bar tags -->
+                <div class="col-lg-12">
+                  <div class="sidebar-item tags">
+                    <div class="sidebar-heading">
+                      <h2>Tag Clouds</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        
+                        {% for tag in post.tags.all %}
+                          
+
+                        <li><a href=" {% url 'post_by_tag' tag.slug %} "> {{tag.name}} </a></li>
+                     
+                        {% endfor %}
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
